@@ -54,3 +54,22 @@ def get_challenges(db: Session = Depends(get_db)):
 def get_miners(db: Session = Depends(get_db)):
     miners = db.query(models.Miner).all()
     return miners
+
+@app.get("/challenges/{challenge_id}", response_model=schemas.Challenge)
+def get_challenge(challenge_id: str, db: Session = Depends(get_db)):
+    challenge = db.query(models.Challenge).filter(models.Challenge.id == challenge_id).first()
+    if challenge is None:
+        raise HTTPException(status_code=404, detail="Challenge not found")
+    return challenge
+
+@app.post("/challenges", response_model=schemas.Challenge, status_code=201)
+def create_challenge(challenge: schemas.Challenge, db: Session = Depends(get_db)):
+    db_challenge = models.Challenge(**challenge.model_dump())
+    db.add(db_challenge)
+    db.commit()
+    db.refresh(db_challenge)
+    return db_challenge
+
+@app.post("/healthz")
+def check_health():
+   return {"status": "ok"}
