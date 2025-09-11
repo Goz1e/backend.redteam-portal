@@ -19,11 +19,32 @@ import random
 
 models.Base.metadata.create_all(bind=engine)
 
-ENV = os.getenv("ENV")
-FRONTEND_DOMAIN = os.getenv("FRONTEND_DOMAIN")
-ALLOWED_ORIGINS = "*" if ENV == "development" else [FRONTEND_DOMAIN]
+ENV = os.getenv("ENV", "development")
+FRONTEND_DOMAIN = os.getenv("FRONTEND_DOMAIN", "https://frontend-redteam-portal.vercel.app")
+
+# Configure CORS origins based on environment
+if ENV == "development":
+    ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+elif ENV == "testing":
+    # Allow both main domain and preview deployments
+    ALLOWED_ORIGINS = [
+        "https://frontend-redteam-portal.vercel.app",
+        FRONTEND_DOMAIN  # This will be set in Vercel env vars
+    ]
+    # Remove None values and duplicates
+    ALLOWED_ORIGINS = list(set(filter(None, ALLOWED_ORIGINS)))
+elif ENV == "production":
+    ALLOWED_ORIGINS = [FRONTEND_DOMAIN] if FRONTEND_DOMAIN else ["https://frontend-redteam-portal.vercel.app"]
+else:
+    # Fallback - allow all origins for unknown environments
+    ALLOWED_ORIGINS = "*"
 
 app = FastAPI()
+
+# Debug logging for CORS configuration
+print(f"Environment: {ENV}")
+print(f"Frontend Domain: {FRONTEND_DOMAIN}")
+print(f"Allowed Origins: {ALLOWED_ORIGINS}")
 
 # Mock scoring system
 def mock_score_submission(submission_id: str):
