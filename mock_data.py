@@ -55,57 +55,31 @@ challenges = [
 
 miners = [
     {
-      "id": "0x5f8b...4c1d",
-      "fullAddress": "0x5f8b2c8f9a3d5e7f1b8c2d4e6f8a1b3c5d7e9f4c1d",
-      "name": "CryptoMiner_Alpha",
+      "id": "miner_user_001",
+      "user_id": "user_001",
+      "walletAddress": "0x5f8b2c8f9a3d5e7f1b8c2d4e6f8a1b3c5d7e9f4c1d",
       "totalScore": 0.89,
       "rank": 1,
       "submissions": 47,
       "successRate": 94,
       "totalEarned": "12.45 TAO",
-      "joinDate": "2024-09-15",
-      "lastActive": "2 hours ago",
-      "recentChallenges": [
-        {
-          "name": "Auto Browser Sniffer v2",
-          "score": 0.92,
-          "date": "2025-01-20"
-        },
-        {
-          "name": "Neural Network Models",
-          "score": 0.87,
-          "date": "2025-01-19"
-        },
-        { "name": "Data Analysis", "score": 0.88, "date": "2025-01-18" }
-      ],
-      "trustTier": "Verified",
+      "joinDate": "2024-09-15T10:00:00",
+      "lastActive": "2024-12-10T14:30:00",
+      "trustTier": "gold",
       "publicProfile": True
     },
     {
-      "id": "0x9c4d...2e8a",
-      "fullAddress": "0x9c4d1a7b2e5f8c3a6d9b4e7c0f3a6d9b2e5f8c1a2e8a",
-      "name": "DataScience_Pro",
+      "id": "miner_user_002",
+      "user_id": "user_002",
+      "walletAddress": "0x9c4d1a7b2e5f8c3a6d9b4e7c0f3a6d9b2e5f8c1a2e8a",
       "totalScore": 0.84,
       "rank": 2,
       "submissions": 52,
       "successRate": 88,
       "totalEarned": "10.23 TAO",
-      "joinDate": "2024-08-22",
-      "lastActive": "1 day ago",
-      "recentChallenges": [
-        { "name": "Data Analysis", "score": 0.95, "date": "2025-01-20" },
-        {
-          "name": "Neural Network Models",
-          "score": 0.78,
-          "date": "2025-01-17"
-        },
-        {
-          "name": "Auto Browser Sniffer v2",
-          "score": 0.82,
-          "date": "2025-01-16"
-        }
-      ],
-      "trustTier": "Standard",
+      "joinDate": "2024-08-22T09:15:00",
+      "lastActive": "2024-12-09T16:45:00",
+      "trustTier": "silver",
       "publicProfile": True
     }
 ]
@@ -188,5 +162,171 @@ recent_submissions = [
       "score": 0.76,
       "time": "2d ago",
       "status": "Completed"
+    }
+]
+
+# Submissions data matching the new schema
+submissions = [
+    {
+      "id": "sub_001",
+      "miner": "miner_user_001",  # References miner profile ID
+      "challenge": "abs_v2",     # References challenge ID
+      "challenge_name": "Auto Browser Sniffer v2",
+      "code": """
+function detectBotBehavior(userAgent, clickPattern, mouseMovements) {
+    // Advanced bot detection algorithm
+    const suspiciousPatterns = [
+        /HeadlessChrome/i,
+        /PhantomJS/i,
+        /Selenium/i
+    ];
+    
+    let score = 0;
+    
+    // Check user agent
+    if (suspiciousPatterns.some(pattern => pattern.test(userAgent))) {
+        score += 0.5;
+    }
+    
+    // Analyze click patterns
+    if (clickPattern.variance < 0.1) {
+        score += 0.3;
+    }
+    
+    // Check mouse movements
+    if (mouseMovements.length === 0) {
+        score += 0.4;
+    }
+    
+    return score > 0.7;
+}
+      """.strip(),
+      "score": 0.92,
+      "time": "2025-01-20T14:30:00",
+      "status": "completed"
+    },
+    {
+      "id": "sub_002", 
+      "miner": "miner_user_001",
+      "challenge": "neural_net",
+      "challenge_name": "Neural Network Models",
+      "code": """
+import tensorflow as tf
+import numpy as np
+
+class AdvancedNeuralNetwork:
+    def __init__(self, input_size, hidden_layers, output_size):
+        self.model = tf.keras.Sequential()
+        self.model.add(tf.keras.layers.Dense(hidden_layers[0], 
+                                           activation='relu', 
+                                           input_shape=(input_size,)))
+        
+        for layer_size in hidden_layers[1:]:
+            self.model.add(tf.keras.layers.Dense(layer_size, activation='relu'))
+            self.model.add(tf.keras.layers.Dropout(0.2))
+        
+        self.model.add(tf.keras.layers.Dense(output_size, activation='softmax'))
+        
+    def compile_model(self):
+        self.model.compile(optimizer='adam',
+                          loss='categorical_crossentropy',
+                          metrics=['accuracy'])
+    
+    def train(self, X_train, y_train, epochs=100):
+        return self.model.fit(X_train, y_train, epochs=epochs, validation_split=0.2)
+      """.strip(),
+      "score": 0.87,
+      "time": "2025-01-19T10:15:00",
+      "status": "completed"
+    },
+    {
+      "id": "sub_003",
+      "miner": "miner_user_002", 
+      "challenge": "data_analysis",
+      "challenge_name": "Advanced Data Analysis",
+      "code": """
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+class DataAnalysisPipeline:
+    def __init__(self):
+        self.scaler = StandardScaler()
+        self.clusterer = KMeans(n_clusters=5)
+        
+    def preprocess_data(self, df):
+        # Handle missing values
+        df_cleaned = df.fillna(df.median())
+        
+        # Remove outliers using IQR method
+        Q1 = df_cleaned.quantile(0.25)
+        Q3 = df_cleaned.quantile(0.75)
+        IQR = Q3 - Q1
+        
+        df_filtered = df_cleaned[~((df_cleaned < (Q1 - 1.5 * IQR)) | 
+                                  (df_cleaned > (Q3 + 1.5 * IQR))).any(axis=1)]
+        
+        return df_filtered
+    
+    def analyze_patterns(self, data):
+        scaled_data = self.scaler.fit_transform(data)
+        clusters = self.clusterer.fit_predict(scaled_data)
+        
+        return {
+            'clusters': clusters,
+            'centroids': self.clusterer.cluster_centers_,
+            'inertia': self.clusterer.inertia_
+        }
+      """.strip(),
+      "score": 0.95,
+      "time": "2025-01-20T09:45:00",
+      "status": "completed"
+    },
+    {
+      "id": "sub_004",
+      "miner": "miner_user_002",
+      "challenge": "neural_net",
+      "challenge_name": "Neural Network Models",
+      "code": """
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class ConvolutionalNeuralNetwork(nn.Module):
+    def __init__(self, num_classes=10):
+        super(ConvolutionalNeuralNetwork, self).__init__()
+        
+        self.conv_layers = nn.Sequential(
+            nn.Conv2d(3, 32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2),
+            
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2),
+            
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2)
+        )
+        
+        self.classifier = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(128 * 4 * 4, 512),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(512, num_classes)
+        )
+    
+    def forward(self, x):
+        x = self.conv_layers(x)
+        x = x.view(x.size(0), -1)
+        x = self.classifier(x)
+        return x
+      """.strip(),
+      "score": 0.78,
+      "time": "2025-01-17T16:20:00",
+      "status": "completed"
     }
 ]
